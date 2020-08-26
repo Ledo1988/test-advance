@@ -16,7 +16,6 @@ class App extends React.Component {
 			]
 		};
 
-		//this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
@@ -72,8 +71,6 @@ class App extends React.Component {
 		this.setState({data});
 	}
 
-
-
 	handleSubmit(event) {
 
 		event.preventDefault();
@@ -85,13 +82,12 @@ class App extends React.Component {
 		const dataValue = data.map(item => item.value);
 
 		const newObject = new getFormValues(dataType, dataValue);
+		const result = convertArrayToObject (newObject);
 
 		function getFormValues(type, value) {
 			this.type = type;
 			this.value = value;
 		}
-
-		const result = convertArrayToObject (newObject);
 
 		function convertArrayToObject (object) {
 
@@ -105,9 +101,14 @@ class App extends React.Component {
 			console.log(resultArray)
 			return resultArray;
 		}
+
+
+		alert("Форма заполнена" + "  getFormValues:  " + JSON.stringify(newObject) + "  convertArrayToObject:  " + JSON.stringify(result))
+
+		data = []
+		data.push({id: 0, type: "phone", value: "", inputType: "tel", pattern: "^[0-9-+\\s()]*$"})
+		this.setState({data});
 	}
-
-
 
 	render() {
 		return (
@@ -157,14 +158,11 @@ class App extends React.Component {
 							className="main-form__btn-remove"
 							onClick={() => this.handleRemoveInput(i)}
 						>-</button>
-					</div>)})};
-				<br/><br/><br/>
+					</div>)})}
+				<br/><br/>
 				<button type="submit"
 						className="main-form__btn-submit"
 				>Submit</button>
-				<pre>
-					{JSON.stringify(this.state, null, 2)}
-				</pre>
 			</form>
 
 		);

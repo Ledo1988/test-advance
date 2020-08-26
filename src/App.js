@@ -75,7 +75,7 @@ class App extends React.Component {
 
 
 	handleSubmit(event) {
-		//alert("Your choice: " + this.state.data.type + " " + this.state.data.value);
+
 		event.preventDefault();
 
 		let data = [...this.state.data];
@@ -90,22 +90,21 @@ class App extends React.Component {
 			this.type = type;
 			this.value = value;
 		}
-		console.log(newObject)
 
 		const result = convertArrayToObject (newObject);
 
 		function convertArrayToObject (object) {
-			let result = Object.keys(object).map(function(e, i) {
-				let obj = {};
-				console.log(Object.keys(object));
-				Object.keys(object).forEach((a, j) => obj[a] = object[a][i]);
-				return obj;
-			})
 
-			return result;
+			let resultArray = Object.keys(object).reduce(function (items, key) {
+				object[key].forEach(function (a, i) {
+					items[i] = items[i] || {};
+					items[i][key] = a;
+				});
+				return items;
+			}, []);
+			console.log(resultArray)
+			return resultArray;
 		}
-
-		console.log(result)
 	}
 
 

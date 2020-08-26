@@ -30,7 +30,7 @@ class App extends React.Component {
 
 		let item = data.find(item => item.id === itemId);
 		item.type = itemValue;
-		item.value = "";
+		//item.value = "";
 		item.inputType = currentInputType;
 
 		this.setState({data});
@@ -49,13 +49,26 @@ class App extends React.Component {
 
 	handleAddInput (i) {
 		const data = [...this.state.data];
+		data.forEach(item => (item.id > i) ? item.id++ : false);
 		data.push({id: i + 1, type: "Phone", value: "", inputType: "tel"});
+		data.sort(function (a, b) {
+			if (a.id > b.id) {
+				return 1;
+			}
+			if (a.id < b.id) {
+				return -1;
+			}
+
+			return 0;
+		});
+		//data.push({id: data.length, type: "Phone", value: "", inputType: "tel"});
 		this.setState({data});
 	}
 
-	handleRemoveInput (index) {
+	handleRemoveInput (i) {
 		const data = [...this.state.data];
-		data.splice(index, 1);
+		data.forEach(item => (item.id > i) ? item.id-- : false);
+		data.splice(i, 1);
 		this.setState({data});
 	}
 

@@ -21,17 +21,18 @@ class App extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleInput = this.handleInput.bind(this);
+		this.handleAddInput = this.handleAddInput.bind(this);
+		this.handleRemoveInput = this.handleRemoveInput.bind(this);
 	}
 
 	handleChange(event, i) {
 		const itemValue = event.target.value;
-		const itemId = i;
 		const data = [...this.state.data];
 
-		let currentInputType = inputTypeArray.find(item => (item.value === event.target.value) ? item.type: false);
+		let currentInputType = inputTypeArray.find(item => (item.value === itemValue) ? item.type: false);
 		currentInputType = currentInputType.type;
 
-		let item = data.find(item => item.id === itemId);
+		let item = data.find(item => item.id === i);
 		item.type = itemValue;
 		item.inputType = currentInputType;
 		(currentInputType === 'tel') ? item.pattern = "^[0-9-+\\s()]*$" : item.pattern = "";
@@ -40,18 +41,17 @@ class App extends React.Component {
 	}
 
 	handleInput(event, i) {
-		const inputValue = event.target.value;
-		const inputId = i;
 		const data = [...this.state.data];
 
-		let item = data.find(item => item.id === inputId);
-		item.value = inputValue;
+		let item = data.find(item => item.id === i);
+		item.value = event.target.value;
 
 		this.setState({data});
 	}
 
 	handleAddInput (i) {
 		const data = [...this.state.data];
+
 		data.forEach(item => (item.id > i) ? item.id++ : false);
 		data.push({id: i + 1, type: "phone", value: "", inputType: "tel", pattern: "^[0-9-+\\s()]*$"});
 		data.sort(function (a, b) {
@@ -61,7 +61,6 @@ class App extends React.Component {
 			if (a.id < b.id) {
 				return -1;
 			}
-
 			return 0;
 		});
 
@@ -70,8 +69,12 @@ class App extends React.Component {
 
 	handleRemoveInput (i) {
 		const data = [...this.state.data];
-		data.forEach(item => (item.id > i) ? item.id-- : false);
-		data.splice(i, 1);
+
+		data.forEach(item => (item.id > i ) ? item.id-- : false);
+		if (i > 0) {
+			data.splice(i, 1);
+		}
+
 		this.setState({data});
 	}
 

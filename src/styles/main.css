@@ -1,0 +1,25 @@
+.main-form {
+  width: 365px;
+  margin: 25px auto;
+  display: flex;
+  flex-direction: column; }
+  .main-form__item {
+    display: flex;
+    margin-bottom: 10px; }
+    .main-form__item:last-of-type {
+      margin-bottom: 40px; }
+  .main-form__select {
+    min-width: 75px;
+    flex-grow: 0; }
+  .main-form__input {
+    padding: 0 10px;
+    margin-right: 10px;
+    flex-grow: 1; }
+  .main-form__submit {
+    align-self: center; }
+  .main-form .main-form__btn {
+    padding: 5px;
+    min-width: 34px;
+    margin-right: 5px; }
+
+/*# sourceMappingURL=main.css.map */

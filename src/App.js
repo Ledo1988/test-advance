@@ -15,7 +15,8 @@ class App extends React.Component {
 		this.state = {
 			data: [
 				{id: 0, type: "phone", value: "", inputType: "tel", pattern: "^[0-9-+\\s()]*$"},
-			]
+			],
+			submitDisabled: true,
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -46,7 +47,10 @@ class App extends React.Component {
 		let item = data.find(item => item.id === i);
 		item.value = event.target.value;
 
-		this.setState({data});
+		let submitValid = data.map(item => item.value !== '');
+		submitValid = submitValid.includes(true);
+
+		this.setState({data, submitDisabled: !submitValid} );
 	}
 
 	handleAddInput (i) {
@@ -71,9 +75,7 @@ class App extends React.Component {
 		const data = [...this.state.data];
 
 		data.forEach(item => (item.id > i ) ? item.id-- : false);
-		if (i > 0) {
-			data.splice(i, 1);
-		}
+		data.splice(i, 1);
 
 		this.setState({data});
 	}
@@ -109,7 +111,7 @@ class App extends React.Component {
 			return resultArray;
 		}
 
-		alert("Форма заполнена" + "  getFormValues:  " + JSON.stringify(newObject) + "  convertArrayToObject:  " + JSON.stringify(result))
+		alert("Форма заполнена. getFormValues:  " + JSON.stringify(newObject) + "  convertArrayToObject:  " + JSON.stringify(result));
 
 		data = []
 		data.push({id: 0, type: "phone", value: "", inputType: "tel", pattern: "^[0-9-+\\s()]*$"})
@@ -160,21 +162,25 @@ class App extends React.Component {
 										 onClick={() => this.handleAddInput(i)}>
 							+</Button>
 							: false
-						}<Button variant="contained"
-								 color="primary"
-								 type="button"
-								 className="main-form__btn main-form__btn-remove"
-								 onClick={() => this.handleRemoveInput(i)}>
-						-</Button>
+						}
+						{item.id === 0 && item.id === this.state.data.length - 1
+							? false
+							: <Button variant="contained"
+									  color="primary"
+									  type="button"
+									  className="main-form__btn main-form__btn-remove"
+									  onClick={() => this.handleRemoveInput(i)}>
+								-</Button>
+							}
 					</div>)})}
-				<Button variant="contained"
-						color="primary"
-						type="submit"
-						className="main-form__submit">
-					Submit
-				</Button>
+					<Button variant="contained"
+							color="primary"
+							type="submit"
+							className="main-form__submit"
+							disabled={this.state.submitDisabled}>
+						Submit
+					</Button>
 			</form>
-
 		);
 	}
 }

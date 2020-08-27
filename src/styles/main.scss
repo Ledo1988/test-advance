@@ -1,12 +1,11 @@
 .main-form {
-  width: 650px;
+  width: 365px;
   margin: 25px auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
 
   &__item {
-    width: 390px;
+    display: flex;
     margin-bottom: 10px;
 
     &:last-of-type {
@@ -15,20 +14,23 @@
   }
 
   &__select {
-    min-width: 75px
+    min-width: 75px;
+    flex-grow: 0;
   }
 
   &__input {
     padding: 0 10px;
+    margin-right: 10px;
+    flex-grow: 1;
+  }
+
+  &__submit {
+    align-self: center;
   }
 
   .main-form__btn {
     padding: 5px;
     min-width: 34px;
-    margin-left: 10px;
-
-    &.main-form__btn-remove {
-      margin-left: 5px;
-    }
+    margin-right: 5px;
   }
 }

@@ -1,4 +1,6 @@
 import React from "react";
+import 'fontsource-roboto';
+import {Button, Input, Select, MenuItem} from "@material-ui/core";
 import "./styles/main.css";
 
 const inputTypeArray = [
@@ -16,7 +18,9 @@ class App extends React.Component {
 			]
 		};
 
+		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleInput = this.handleInput.bind(this);
 	}
 
 	handleChange(event, i) {
@@ -98,10 +102,9 @@ class App extends React.Component {
 				});
 				return items;
 			}, []);
-			console.log(resultArray)
+
 			return resultArray;
 		}
-
 
 		alert("Форма заполнена" + "  getFormValues:  " + JSON.stringify(newObject) + "  convertArrayToObject:  " + JSON.stringify(result))
 
@@ -112,57 +115,61 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<form onSubmit={this.handleSubmit} method="POST" action="/">
+			<form onSubmit={this.handleSubmit} method="POST" action="/" className="main-form">
 				{this.state.data.map((item, i) => {
 					return (
 					<div key={i} className="main-form__item">
-						<label className="main-form__label">
-							<select value={item.type}
-									onChange={event => this.handleChange(event, i)}
-									className="main-form__select">
-								<option value="phone"
-										className="main-form__option">Phone</option>
-								<option value="email"
-										className="main-form__option">Email</option>
-								<option value="link"
-										className="main-form__option">Link</option>
-							</select>
-						</label>
+						<Select
+							value={item.type}
+							onChange={event => this.handleChange(event, i)}
+							displayEmpty
+							className="main-form__select"
+							inputProps={{ 'aria-label': 'Without label' }}
+						>
+							<MenuItem value="phone"
+									  className="main-form__option">Phone</MenuItem>
+							<MenuItem value="email"
+									  className="main-form__option">Email</MenuItem>
+							<MenuItem value="link"
+									  className="main-form__option">Link</MenuItem>
+						</Select>
 						{(item.pattern !== "")
-							? <input
-								className="main-form__input"
-								type={item.inputType}
-								name="inputInfo"
-								value={item.value}
-								pattern={item.pattern}
-								onChange={event => this.handleInput (event, i)}
-							/>
-							: <input
-								className="main-form__input"
-								type={item.inputType}
-								name="inputInfo"
-								value={item.value}
-								onChange={event => this.handleInput (event, i)}
-							/>
+							? <Input inputProps={{ 'aria-label': 'description', 'pattern': `${item.pattern}`}}
+									 className="main-form__input"
+									 type={item.inputType}
+									 name="inputInfo"
+									 value={item.value}
+									 onChange={event => this.handleInput (event, i)}/>
+
+							: <Input defaultValue=""
+									 inputProps={{ 'aria-label': 'description' }}
+									 className="main-form__input"
+									 type={item.inputType}
+									 name="inputInfo"
+									 value={item.value}
+									 onChange={event => this.handleInput (event, i)}/>
 						}
 						{item.value !== "" || item.id === 0 || item.id !== this.state.data.length - 1
-							?	<button
-								type="button"
-								className="main-form__btn-add"
-								onClick={() => this.handleAddInput(i)}
-							>+</button>
+							? <Button variant="contained"
+										 color="secondary"
+										 type="button"
+										 className="main-form__btn main-form__btn-add"
+										 onClick={() => this.handleAddInput(i)}>
+							+</Button>
 							: false
-						}
-						<button
-							type="button"
-							className="main-form__btn-remove"
-							onClick={() => this.handleRemoveInput(i)}
-						>-</button>
+						}<Button variant="contained"
+								 color="primary"
+								 type="button"
+								 className="main-form__btn main-form__btn-remove"
+								 onClick={() => this.handleRemoveInput(i)}>
+						-</Button>
 					</div>)})}
-				<br/><br/>
-				<button type="submit"
-						className="main-form__btn-submit"
-				>Submit</button>
+				<Button variant="contained"
+						color="primary"
+						type="submit"
+						className="main-form__submit">
+					Submit
+				</Button>
 			</form>
 
 		);
